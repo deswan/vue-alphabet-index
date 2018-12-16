@@ -2,6 +2,8 @@
 
 > 移动端竖排字母索引组件（类似微信地址栏右侧索引）
 
+##Demo
+[demo](https://deswan.github.io/vue-alphabet-index/)
 
 ## Install
 ```bash
