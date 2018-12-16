@@ -33,7 +33,7 @@ module.exports = {
   },
   demo:{
     entry: './demo/index.js',
-    assetsRoot: path.resolve(__dirname, '../dist-demo'),
+    assetsRoot: path.resolve(__dirname, '../docs'),
     assetsSubDirectory: '.',
     assetsPublicPath: '',
     productionSourceMap: true
