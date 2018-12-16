@@ -1,6 +1,6 @@
 {
   "name": "vue-alphabet-index",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "vue-alphabet-index component",
   "main": "./dist/vue-alphabet-index.js",
   "scripts": {
@@ -9,7 +9,7 @@
     "demo:build": "cross-env DEMO=true node build/build.js",
     "build": "node build/build.js"
   },
-  "files":[
+  "files": [
     "dist"
   ],
   "repository": {
@@ -18,7 +18,11 @@
   },
   "license": "MIT",
   "unpkg": "./dist/vue-alphabet-index.js",
-  "keywords": ["vue", "alphabet-index", "component"],
+  "keywords": [
+    "vue",
+    "alphabet-index",
+    "component"
+  ],
   "author": "deswan",
   "peerDependencies": {
     "vue": "^2.5.13"
