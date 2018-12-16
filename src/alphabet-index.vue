@@ -1,17 +1,18 @@
 <template>
     <!-- A-Z字母排序导航栏 -->
     <div class="alphabet-index">
-        <ul class="alphabet-index-list"
+        <ul :class="['alphabet-index-list', listClass]"
         ref="list"
         @touchmove.prevent="handleMove"
         @click="handleClick"
         >
-            <li class="alphabet-index-item" ref="items" v-for="item in items" :key="item">{{item}}</li>
+            <li :class="['alphabet-index-item', itemClass]" ref="items" v-for="item in items" :key="item">{{item}}</li>
         </ul>
     </div>
 </template>
 
 <script>
+import throttle from './throttle.js';
 export default {
     name: "alphabet-index",
     props: {
@@ -26,8 +27,8 @@ export default {
             }
         },
         /**
-         * init: Boolean 是否触发初始化
-         * 当init设为true, 组件开始获取自身的DOM位置数据
+         * init: Boolean
+         * 当init设为true, 组件开始获取DOM位置数据
          */
         init: {
             type: Boolean
@@ -38,8 +39,10 @@ export default {
          */
         throttleTime: {
             type: Number,
-            default: 16
-        }
+            default: 80
+        },
+        itemClass: String,
+        listClass: String,
     },
     data() {
         return {
@@ -50,7 +53,7 @@ export default {
     },
     methods: {
         handleChange(cliengY) {
-            if (!this.init) return -1;
+            if (!this.init) return;
             let offsetHeight = cliengY - this.boundingTop;
             let index = Math.floor(offsetHeight / this.itemHeight);
             if (index < 0) {
@@ -64,10 +67,7 @@ export default {
             });
         },
         handleMove(e) {
-            this.timer && clearTimeout(this.timer);
-            this.timer = setTimeout(() => {
-                this.handleChange(e.touches[0].clientY);
-            }, this.throttleTime);
+            this.handleChange(e.touches[0].clientY);
         },
         handleClick(e) {
             this.handleChange(e.clientY);
@@ -78,23 +78,34 @@ export default {
             if (this.$refs.items) this.itemHeight = this.$refs.items[0].clientHeight;
         }
     },
-    watch: {
-        init(init) {
-            init && this.handleInit();
-        }
+    created(){
+        if(this.throttleTime) this.handleMove = throttle(this.handleMove, this.throttleTime)
+    },
+    mounted(){
+        this.init && this.handleInit();
+        this.$watch('init', ()=>{
+            this.init && this.handleInit();
+        })
     }
 };
 </script>
 
-<style scoped>
+<style>
+.alphabet-index{
+    font-family: sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
 .alphabet-index-list {
     box-sizing: content-box;
-    width: 0.93rem;
-    padding: 0 0.29rem 0 1.14rem;
+    width: 14px;
+    padding: 0 6px 0 18px;
     text-align: center;
 }
 .alphabet-index-item {
-    height: 1.14rem;
+    list-style: none;
+    height: 18px;
+    overflow: hidden;
+    line-height: 18px;
     font-weight: bold;
 }
 </style>
